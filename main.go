@@ -37,6 +37,7 @@ import (
 	"crypto/sha256"
 	"flag"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -71,6 +72,33 @@ func init() {
 	flag.BoolVar(&namesonly, "a", false, "show file name only.")
 	flag.BoolVar(&absolute, "A", false, "show absolute paths.")
 	flag.BoolVar(&removeExtension, "f", false, "remove filename extension. resulting duplicates will be removed.")
+	usage := strings.NewReplacer("'", "`").Replace(`fn
+
+Description:
+	'fn' is a tool for generating, and parsing, file names based on
+	current date, time, process id and gitsha.
+
+	use 'fn' to generate a file name.
+	use 'fn -r [dir]' to get the most recent file (in dir).
+	more options listed below.
+
+
+Usage:
+	fn [-m] [-t]
+	fn -g
+	fn -p
+	fn -r [-a|-A] [-f] [-i] [-n <num>] [<dir>]
+	fn -l [-a|-A] [-f] [-i] [-n <num>] [<dir>]
+	fn -L [-a|-A] [-f] [-i] [-n <num>] [<dir>]
+	fn -s [<dir>]
+
+
+Options:`)
+	flag.Usage = func() {
+		fmt.Println(usage)
+
+		flag.PrintDefaults()
+	}
 }
 
 func main() {
